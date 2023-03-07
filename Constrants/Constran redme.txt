@@ -1,0 +1,5 @@
+1.In this 'CONSTRANT.sql' file code is all about 
+	CONSTRANTS like:
+
+	I.NOT NULL;  II.UNIQUE;  III.DEFAUL;  IV.CHECK(condition);
+	  
