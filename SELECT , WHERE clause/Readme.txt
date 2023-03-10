@@ -1,3 +1,4 @@
+	Syntax
 	
 	SELECT COLUMN1,COLUMN2,.... FROM TABLE_NAME
 
