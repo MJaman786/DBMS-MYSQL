@@ -1,0 +1,38 @@
+DROP DATABASE DETAILS;
+CREATE DATABASE DETAILS;
+USE DETAILS;
+
+CREATE TABLE CITY(
+		CID INT AUTO_INCREMENT,
+		CITY VARCHAR(30),
+        PRIMARY KEY (CID)        
+	);
+    ALTER TABLE CITY RENAME TO CITY_NAME;
+INSERT INTO CITY_NAME(CITY)
+VALUES 
+('Agra'),
+('Delhi'),
+('Bhopal'),
+('Jaipur'),
+('Noida');
+
+CREATE TABLE STUDENT(
+    ID INT NOT NULL AUTO_INCREMENT,
+    NAME VARCHAR(30),
+	PERCENTAGE INT NOT NULL,
+    AGE INT NOT NULL,
+    GENDER VARCHAR (20),
+    CITY VARCHAR(10) NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (CITY) REFERENCES CITY_NAME(CID)
+    );
+    DROP TABLE STUDENT;
+    INSERT INTO STUDENT (ID, NAME, PERCENTAGE, AGE, GENDER, CITY)
+VALUES 
+(1, "Ram Kumar",45, 19, "M", 1),
+(2, "Sarita Kumari",55, 22, "F", 2),
+(3, "Salman Khan",62, 20, "M", 1),
+(4, "Juhi Chawla",47, 18, "F", 3),
+(5, "Anil Kapoor",74, 22, "M", 1),
+(6, "John Abraham",64, 21, "M", 2),
+(7, "Shahid Kapoor",52, 20, "M", 1);
