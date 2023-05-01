@@ -1,0 +1,187 @@
+	ASSIGNMENT 4:
+
+NAME   = AMAN MUNIR MUJAWAR
+DIV    = IT
+ROLLNO = SIB-16
+
+/*
+	Design and implement a database (for assignment no 3) using DDL statements and apply 
+	normalization on them
+*/
+
+mysql> CREATE DATABASE EMPLOYEE;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE EMPLOYEE;
+Database changed
+
+			==================================== (TABLE :1) ====================================
+
+mysql> CREATE TABLE MANAGER (
+    ->     MANAGER_ID VARCHAR(10),
+    ->     MANAGER_NAME VARCHAR(50),
+    ->     MANAGER_EMAIL VARCHAR(50),
+    ->     MANAGER_PHONE VARCHAR(50),
+    ->     PRIMARY KEY(MANAGER_ID,MANAGER_EMAIL)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DESC MANAGER;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| MANAGER_ID    | varchar(10) | NO   | PRI | NULL    |       |
+| MANAGER_NAME  | varchar(50) | YES  |     | NULL    |       |
+| MANAGER_EMAIL | varchar(50) | NO   | PRI | NULL    |       |
+| MANAGER_PHONE | varchar(50) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> INSERT INTO MANAGER(MANAGER_ID,MANAGER_NAME,MANAGER_EMAIL,MANAGER_PHONE)
+    -> VALUES
+    -> ('M-12','JHON WICK','jhon@email.com',1112221234),
+    -> ('M-10','MOHAN LAL','mohan@email.com',4445556661);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+			==================================== (TABLE :2) ====================================
+
+mysql> CREATE TABLE DEPARTMENT (
+    ->
+    ->     DEPARTMENT_ID BIGINT NOT NULL,
+    ->     DEPARTMENT_NAME VARCHAR(30) NOT NULL,
+    ->     PRIMARY KEY(DEPARTMENT_ID)
+    ->
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DESC DEPARTMENT;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| DEPARTMENT_ID   | bigint      | NO   | PRI | NULL    |       |
+| DEPARTMENT_NAME | varchar(30) | NO   |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> INSERT INTO DEPARTMENT (DEPARTMENT_ID,DEPARTMENT_NAME)
+    -> VALUES
+    -> (1,'DEVELOPER'),
+    -> (2,'DATA MANAGEMENT'),
+    -> (3,'DATA ANALYTICS');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+			==================================== (TABLE :3) ====================================
+
+mysql> CREATE TABLE EMPLOYEE_INFO (
+    ->
+    ->     EMPLOYEE_ID INT NOT NULL,
+    ->     EMPLOYEE_NAME VARCHAR(30) NOT NULL,
+    ->     EMPLOYEE_PHONE BIGINT NOT NULL,
+    ->     EMPLOYEE_CITY VARCHAR(30) NOT NULL,
+    ->     EMPLOYEE_DEPARTMENT BIGINT NOT NULL,
+    ->     MANAGER_ID VARCHAR(10),
+    ->     PRIMARY KEY(EMPLOYEE_ID,EMPLOYEE_PHONE),
+    ->     FOREIGN KEY(EMPLOYEE_DEPARTMENT) REFERENCES DEPARTMENT(DEPARTMENT_ID),
+    ->     FOREIGN KEY(MANAGER_ID) REFERENCES MANAGER(MANAGER_ID)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql>
+mysql> DESC EMPLOYEE_INFO;
++---------------------+-------------+------+-----+---------+-------+
+| Field               | Type        | Null | Key | Default | Extra |
++---------------------+-------------+------+-----+---------+-------+
+| EMPLOYEE_ID         | int         | NO   | PRI | NULL    |       |
+| EMPLOYEE_NAME       | varchar(30) | NO   |     | NULL    |       |
+| EMPLOYEE_PHONE      | bigint      | NO   | PRI | NULL    |       |
+| EMPLOYEE_CITY       | varchar(30) | NO   |     | NULL    |       |
+| EMPLOYEE_DEPARTMENT | bigint      | NO   | MUL | NULL    |       |
+| MANAGER_ID          | varchar(10) | YES  | MUL | NULL    |       |
++---------------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEE_INFO (EMPLOYEE_ID,EMPLOYEE_NAME,EMPLOYEE_PHONE,EMPLOYEE_CITY,EMPLOYEE_DEPARTMENT,MANAGER_ID)
+    -> VALUES
+    -> (100,'JHON WICK',1009123452,'PUNE',1,'M-12'),
+    -> (100,'JHON WICK',1231234321,'PUNE',3,'M-12'),
+    -> (101,'SALMAN KHAN',1786549873,'MUMBAI',2,NULL),
+    -> (101,'SALMAN KHAN',1236541246,'MUMBAI',1,NULL),
+    -> (102,'MOHAN LAL',1236548761,'DELHI',3,'M-10'),
+    -> (103,'SUMAN VARMA',176456432,'DELHI',2,NULL);
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE.DEPARTMENT;
++---------------+-----------------+
+| DEPARTMENT_ID | DEPARTMENT_NAME |
++---------------+-----------------+
+|             1 | DEVELOPER       |
+|             2 | DATA MANAGEMENT |
+|             3 | DATA ANALYTICS  |
++---------------+-----------------+
+3 rows in set (0.01 sec)
+
+mysql> SELECT * FROM EMPLOYEE.MANAGER;
++------------+--------------+-----------------+---------------+
+| MANAGER_ID | MANAGER_NAME | MANAGER_EMAIL   | MANAGER_PHONE |
++------------+--------------+-----------------+---------------+
+| M-10       | MOHAN LAL    | mohan@email.com | 4445556661    |
+| M-12       | JHON WICK    | jhon@email.com  | 1112221234    |
++------------+--------------+-----------------+---------------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT * FROM EMPLOYEE.EMPLOYEE_INFO;
++-------------+---------------+----------------+---------------+---------------------+------------+
+| EMPLOYEE_ID | EMPLOYEE_NAME | EMPLOYEE_PHONE | EMPLOYEE_CITY | EMPLOYEE_DEPARTMENT | MANAGER_ID |
++-------------+---------------+----------------+---------------+---------------------+------------+
+|         100 | JHON WICK     |     1009123452 | PUNE          |                   1 | M-12       |
+|         100 | JHON WICK     |     1231234321 | PUNE          |                   3 | M-12       |
+|         101 | SALMAN KHAN   |     1236541246 | MUMBAI        |                   1 | NULL       |
+|         101 | SALMAN KHAN   |     1786549873 | MUMBAI        |                   2 | NULL       |
+|         102 | MOHAN LAL     |     1236548761 | DELHI         |                   3 | M-10       |
+|         103 | SUMAN VARMA   |      176456432 | DELHI         |                   2 | NULL       |
++-------------+---------------+----------------+---------------+---------------------+------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE.EMPLOYEE_INFO
+    -> WHERE EMPLOYEE_ID = 100;
++-------------+---------------+----------------+---------------+---------------------+------------+
+| EMPLOYEE_ID | EMPLOYEE_NAME | EMPLOYEE_PHONE | EMPLOYEE_CITY | EMPLOYEE_DEPARTMENT | MANAGER_ID |
++-------------+---------------+----------------+---------------+---------------------+------------+
+|         100 | JHON WICK     |     1009123452 | PUNE          |                   1 | M-12       |
+|         100 | JHON WICK     |     1231234321 | PUNE          |                   3 | M-12       |
++-------------+---------------+----------------+---------------+---------------------+------------+
+2 rows in set (0.00 sec)
+
+
+mysql> SELECT * FROM EMPLOYEE.EMPLOYEE_INFO
+    -> WHERE EMPLOYEE_ID = 101;
++-------------+---------------+----------------+---------------+---------------------+------------+
+| EMPLOYEE_ID | EMPLOYEE_NAME | EMPLOYEE_PHONE | EMPLOYEE_CITY | EMPLOYEE_DEPARTMENT | MANAGER_ID |
++-------------+---------------+----------------+---------------+---------------------+------------+
+|         101 | SALMAN KHAN   |     1236541246 | MUMBAI        |                   1 | NULL       |
+|         101 | SALMAN KHAN   |     1786549873 | MUMBAI        |                   2 | NULL       |
++-------------+---------------+----------------+---------------+---------------------+------------+
+2 rows in set (0.00 sec)
+
+
+mysql> SELECT * FROM EMPLOYEE.EMPLOYEE_INFO
+    -> WHERE EMPLOYEE_ID = 102;
++-------------+---------------+----------------+---------------+---------------------+------------+
+| EMPLOYEE_ID | EMPLOYEE_NAME | EMPLOYEE_PHONE | EMPLOYEE_CITY | EMPLOYEE_DEPARTMENT | MANAGER_ID |
++-------------+---------------+----------------+---------------+---------------------+------------+
+|         102 | MOHAN LAL     |     1236548761 | DELHI         |                   3 | M-10       |
++-------------+---------------+----------------+---------------+---------------------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEE.EMPLOYEE_INFO
+    -> WHERE EMPLOYEE_ID = 103;
++-------------+---------------+----------------+---------------+---------------------+------------+
+| EMPLOYEE_ID | EMPLOYEE_NAME | EMPLOYEE_PHONE | EMPLOYEE_CITY | EMPLOYEE_DEPARTMENT | MANAGER_ID |
++-------------+---------------+----------------+---------------+---------------------+------------+
+|         103 | SUMAN VARMA   |      176456432 | DELHI         |                   2 | NULL       |
++-------------+---------------+----------------+---------------+---------------------+------------+
+1 row in set (0.00 sec)
+	
