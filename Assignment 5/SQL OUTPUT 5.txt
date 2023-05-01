@@ -1,0 +1,216 @@
+
+	ASSIGNMENT 5:
+
+NAME   = AMAN MUNIR MUJAWAR
+DIV    = IT
+ROLLNO = SIB-16
+
+/*
+
+	Create Table with primary key and foreign key constraints.
+	a. Alter table with add n modify b. Drop table
+
+*/
+
+mysql> DROP DATABASE STUDENT_DATA;
+Query OK, 3 rows affected (0.05 sec)
+
+mysql> CREATE DATABASE STUDENT_DATA;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE STUDENT_DATA;
+Database changed
+
+mysql> CREATE TABLE CITY(
+    -> 	   CITY_ID INT NOT NULL,
+    ->     CITY_NAME VARCHAR(30) NOT NULL DEFAULT 'PUNE',
+    ->     PRIMARY KEY(CITY_ID)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO CITY(CITY_ID,CITY_NAME)
+    -> VALUES
+    -> (1,DEFAULT),
+    -> (2,'DELHI'),
+    -> (3,'MUMBAI'),
+    -> (4,'CHENNI');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE COURSES(
+    -> COURSE_ID INT NOT NULL,
+    ->     COURSE_NAME VARCHAR(130) NOT NULL,
+    -> PRIMARY KEY(COURSE_ID)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO COURSES(COURSE_ID,COURSE_NAME)
+    -> VALUES
+    -> (1001,'INFORMATION TECHNOLOGY'),
+    -> (1002,'COMPUTER SCIENCE'),
+    -> (1003,'ELECTRONIC AND TELECOMMUNICATION'),
+    -> (1004,'MECHANICAL');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE STUDENT(
+    -> STUDENT_ID BIGINT NOT NULL,
+    -> STUDENT_NAME VARCHAR(120) NOT NULL,
+    ->     STUDENT_CITY INT NOT NULL,
+    ->     STUDENT_COURSES INT NOT NULL,
+    ->     PRIMARY KEY(STUDENT_ID,STUDENT_COURSES),
+    ->     FOREIGN KEY(STUDENT_CITY) REFERENCES CITY(CITY_ID),
+    ->     FOREIGN KEY(STUDENT_COURSES) REFERENCES COURSES(COURSE_ID)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> INSERT INTO STUDENT(STUDENT_ID,STUDENT_NAME,STUDENT_CITY,STUDENT_COURSES)
+    -> VALUES
+    -> (1122,'ROHAN KUMAR',1,1001),
+    -> (1123,'ALLU ARJUN',4,1002),
+    -> (2244,'NOBITA NOBI',3,1004),
+    -> (2245,'PRATHAMESH PATIL',1,1002),
+    -> (2246,'SIDDESH KUMBAR',2,1001);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM STUDENT_DATA.CITY;
++---------+-----------+
+| CITY_ID | CITY_NAME |
++---------+-----------+
+|       1 | PUNE      |
+|       2 | DELHI     |
+|       3 | MUMBAI    |
+|       4 | CHENNI    |
++---------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT_DATA.COURSES;
++-----------+----------------------------------+
+| COURSE_ID | COURSE_NAME                      |
++-----------+----------------------------------+
+|      1001 | INFORMATION TECHNOLOGY           |
+|      1002 | COMPUTER SCIENCE                 |
+|      1003 | ELECTRONIC AND TELECOMMUNICATION |
+|      1004 | MECHANICAL                       |
++-----------+----------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> #1 ALTER COMMAND
+
+mysql> SELECT * FROM STUDENT_DATA.STUDENT;
++------------+------------------+--------------+-----------------+
+| STUDENT_ID | STUDENT_NAME     | STUDENT_CITY | STUDENT_COURSES |
++------------+------------------+--------------+-----------------+
+|       1122 | ROHAN KUMAR      |            1 |            1001 |
+|       1123 | ALLU ARJUN       |            4 |            1002 |
+|       2244 | NOBITA NOBI      |            3 |            1004 |
+|       2245 | PRATHAMESH PATIL |            1 |            1002 |
+|       2246 | SIDDESH KUMBAR   |            2 |            1001 |
++------------+------------------+--------------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE STUDENT
+    -> RENAME COLUMN STUDENT_ID TO STUDENT_NO;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM STUDENT_DATA.STUDENT;
++------------+------------------+--------------+-----------------+
+| STUDENT_NO | STUDENT_NAME     | STUDENT_CITY | STUDENT_COURSES |
++------------+------------------+--------------+-----------------+
+|       1122 | ROHAN KUMAR      |            1 |            1001 |
+|       1123 | ALLU ARJUN       |            4 |            1002 |
+|       2244 | NOBITA NOBI      |            3 |            1004 |
+|       2245 | PRATHAMESH PATIL |            1 |            1002 |
+|       2246 | SIDDESH KUMBAR   |            2 |            1001 |
++------------+------------------+--------------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE STUDENT
+    -> ADD COLUMN EMAIL VARCHAR(20);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM STUDENT_DATA.STUDENT;
++------------+------------------+--------------+-----------------+-------+
+| STUDENT_NO | STUDENT_NAME     | STUDENT_CITY | STUDENT_COURSES | EMAIL |
++------------+------------------+--------------+-----------------+-------+
+|       1122 | ROHAN KUMAR      |            1 |            1001 | NULL  |
+|       1123 | ALLU ARJUN       |            4 |            1002 | NULL  |
+|       2244 | NOBITA NOBI      |            3 |            1004 | NULL  |
+|       2245 | PRATHAMESH PATIL |            1 |            1002 | NULL  |
+|       2246 | SIDDESH KUMBAR   |            2 |            1001 | NULL  |
++------------+------------------+--------------+-----------------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql> # TO DROP CONSTRAINT
+mysql> # ALTER TABLE table_name
+mysql> # ALTER COLUMN column_name SET NULL;
+
+mysql> DESC STUDENT;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| STUDENT_NO      | bigint       | NO   | PRI | NULL    |       |
+| STUDENT_NAME    | varchar(120) | NO   |     | NULL    |       |
+| STUDENT_CITY    | int          | NO   | MUL | NULL    |       |
+| STUDENT_COURSES | int          | NO   | PRI | NULL    |       |
+| EMAIL           | varchar(20)  | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+
+mysql> # 2.DROP COMMAND
+
+mysql> ALTER TABLE STUDENT
+    -> DROP COLUMN EMAIL;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC STUDENT;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| STUDENT_NO      | bigint       | NO   | PRI | NULL    |       |
+| STUDENT_NAME    | varchar(120) | NO   |     | NULL    |       |
+| STUDENT_CITY    | int          | NO   | MUL | NULL    |       |
+| STUDENT_COURSES | int          | NO   | PRI | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM STUDENT;
++------------+------------------+--------------+-----------------+
+| STUDENT_NO | STUDENT_NAME     | STUDENT_CITY | STUDENT_COURSES |
++------------+------------------+--------------+-----------------+
+|       1122 | ROHAN KUMAR      |            1 |            1001 |
+|       1123 | ALLU ARJUN       |            4 |            1002 |
+|       2244 | NOBITA NOBI      |            3 |            1004 |
+|       2245 | PRATHAMESH PATIL |            1 |            1002 |
+|       2246 | SIDDESH KUMBAR   |            2 |            1001 |
++------------+------------------+--------------+-----------------+
+5 rows in set (0.00 sec)
+
+
+mysql> # 3.MODIFY
+mysql> # ALTER TABLE table_name
+mysql> # MODIFY COLUMN column_name datatype;
+
+
+mysql> ALTER TABLE STUDENT
+    -> MODIFY STUDENT_NO VARCHAR(20);
+Query OK, 5 rows affected (0.10 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+
+mysql> DESC STUDENT;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| STUDENT_NO      | varchar(20)  | NO   | PRI | NULL    |       |
+| STUDENT_NAME    | varchar(120) | NO   |     | NULL    |       |
+| STUDENT_CITY    | int          | NO   | MUL | NULL    |       |
+| STUDENT_COURSES | int          | NO   | PRI | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
