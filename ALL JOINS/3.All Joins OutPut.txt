@@ -1,0 +1,158 @@
+mysql> drop database admin;
+Query OK, 2 rows affected (0.03 sec)
+
+mysql> CREATE DATABASE ADMIN;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE ADMIN;
+Database changed
+
+mysql> CREATE TABLE CITY(
+    -> CITY_ID INT auto_increment,
+    ->     CITY_NAME VARCHAR(30) NOT NULL,
+    ->     PRIMARY KEY(CITY_ID)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DESC CITY
+    -> ;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| CITY_ID   | int         | NO   | PRI | NULL    | auto_increment |
+| CITY_NAME | varchar(30) | NO   |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+2 rows in set (0.01 sec)
+
+mysql> INSERT INTO CITY (CITY_NAME) VALUES ('PUNE');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CITY (CITY_NAME) VALUES ('DELHI');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CITY (CITY_NAME) VALUES ('MUMBAI');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO CITY (CITY_NAME)
+    -> VALUES
+    -> ('JAIPUR'),
+    -> ('KOLKATA'),
+    -> ('SURAT'),
+    -> ('CHENNAI'),
+    -> ('BHOPAL'),
+    -> ('NAGPUR');
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE STUDENT(
+    -> STUDENT_ID BIGINT NOT NULL,
+    ->     STUDENT_NAME VARCHAR(130) NOT NULL,
+    ->     STUDENT_PHONE BIGINT NOT NULL,
+    ->     STUDENT_CITY INT
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DESC STUDENT;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| STUDENT_ID    | bigint       | NO   |     | NULL    |       |
+| STUDENT_NAME  | varchar(130) | NO   |     | NULL    |       |
+| STUDENT_PHONE | bigint       | NO   |     | NULL    |       |
+| STUDENT_CITY  | int          | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> ALTER TABLE STUDENT
+    -> ADD FOREIGN KEY(STUDENT_CITY) REFERENCES CITY(CITY_ID);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO STUDENT (STUDENT_ID,STUDENT_NAME,STUDENT_PHONE,STUDENT_CITY) VALUES (100,'RAKESH SHARMA',1230985674,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO STUDENT (STUDENT_ID,STUDENT_NAME,STUDENT_PHONE,STUDENT_CITY) VALUES (101,'SUNIL YADAV',4566542347,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STUDENT (STUDENT_ID,STUDENT_NAME,STUDENT_PHONE,STUDENT_CITY) VALUES (102,'JASPRIT BUMRA',4562347786,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STUDENT (STUDENT_ID,STUDENT_NAME,STUDENT_PHONE,STUDENT_CITY) VALUES (103,'VIRAT KOHLI',1233214560,5);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO STUDENT (STUDENT_ID,STUDENT_NAME,STUDENT_PHONE,STUDENT_CITY) VALUES (104,'MAHENDRASINGH DHONI',9876780986,4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> INSERT INTO STUDENT (STUDENT_ID,STUDENT_NAME,STUDENT_PHONE,STUDENT_CITY)
+    -> VALUES
+    -> (105,'MOHAMAD SIRAJ',4562435649,2),
+    -> (106,'MOHAMAD SHAMI',2349875679,3),
+    -> (107,'HARDIK PANDYA',1233243234,3),
+    -> (108,'KUNAL PANDYA',12332234325,4);
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+========================================================= 1.INNER JOIN ===============================================================
+
+mysql> SELECT * FROM STUDENT INNER JOIN CITY
+    -> ON STUDENT.STUDENT_CITY = CITY.CITY_ID;
++------------+---------------------+---------------+--------------+---------+-----------+
+| STUDENT_ID | STUDENT_NAME        | STUDENT_PHONE | STUDENT_CITY | CITY_ID | CITY_NAME |
++------------+---------------------+---------------+--------------+---------+-----------+
+|        100 | RAKESH SHARMA       |    1230985674 |            1 |       1 | PUNE      |
+|        101 | SUNIL YADAV         |    4566542347 |            2 |       2 | DELHI     |
+|        102 | JASPRIT BUMRA       |    4562347786 |            3 |       3 | MUMBAI    |
+|        103 | VIRAT KOHLI         |    1233214560 |            5 |       5 | KOLKATA   |
+|        104 | MAHENDRASINGH DHONI |    9876780986 |            4 |       4 | JAIPUR    |
+|        105 | MOHAMAD SIRAJ       |    4562435649 |            2 |       2 | DELHI     |
+|        106 | MOHAMAD SHAMI       |    2349875679 |            3 |       3 | MUMBAI    |
+|        107 | HARDIK PANDYA       |    1233243234 |            3 |       3 | MUMBAI    |
+|        108 | KUNAL PANDYA        |   12332234325 |            4 |       4 | JAIPUR    |
++------------+---------------------+---------------+--------------+---------+-----------+
+9 rows in set (0.00 sec)
+
+
+========================================================= 2.RIGHT JOIN ===============================================================
+
+mysql> SELECT S.STUDENT_ID,S.STUDENT_NAME,C.CITY_ID FROM STUDENT S RIGHT JOIN CITY C
+    -> ON S.STUDENT_CITY = C.CITY_ID;
+
++------------+---------------------+---------+
+| STUDENT_ID | STUDENT_NAME        | CITY_ID |
++------------+---------------------+---------+
+|        100 | RAKESH SHARMA       |       1 |
+|        101 | SUNIL YADAV         |       2 |
+|        105 | MOHAMAD SIRAJ       |       2 |
+|        102 | JASPRIT BUMRA       |       3 |
+|        106 | MOHAMAD SHAMI       |       3 |
+|        107 | HARDIK PANDYA       |       3 |
+|        104 | MAHENDRASINGH DHONI |       4 |
+|        108 | KUNAL PANDYA        |       4 |
+|        103 | VIRAT KOHLI         |       5 |
+|       NULL | NULL                |       6 |
+|       NULL | NULL                |       7 |
+|       NULL | NULL                |       8 |
+|       NULL | NULL                |       9 |
++------------+---------------------+---------+
+13 rows in set (0.00 sec)
+
+
+========================================================= 3.LEFT JOIN ===============================================================
+
+mysql> SELECT S.STUDENT_ID,S.STUDENT_NAME,C.CITY_ID FROM STUDENT S LEFT JOIN CITY C
+    -> ON S.STUDENT_CITY = C.CITY_ID;
++------------+---------------------+---------+
+| STUDENT_ID | STUDENT_NAME        | CITY_ID |
++------------+---------------------+---------+
+|        100 | RAKESH SHARMA       |       1 |
+|        101 | SUNIL YADAV         |       2 |
+|        102 | JASPRIT BUMRA       |       3 |
+|        103 | VIRAT KOHLI         |       5 |
+|        104 | MAHENDRASINGH DHONI |       4 |
+|        105 | MOHAMAD SIRAJ       |       2 |
+|        106 | MOHAMAD SHAMI       |       3 |
+|        107 | HARDIK PANDYA       |       3 |
+|        108 | KUNAL PANDYA        |       4 |
++------------+---------------------+---------+
+9 rows in set (0.00 sec)
