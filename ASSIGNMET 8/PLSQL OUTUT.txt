@@ -1,0 +1,268 @@
+mysql> CREATE DATABASE PL_SQL;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE PL_SQL;
+Database changed
+
+mysql> CREATE TABLE STUDENT(
+    -> STUDENT_ID INT NOT NULL,
+    ->     STUDENT_NAME VARCHAR(100) NOT NULL,
+    ->     STUDENT_AGE INT DEFAULT 28,
+    ->     PRIMARY KEY (STUDENT_ID)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO STUDENT (STUDENT_ID,STUDENT_NAME,STUDENT_AGE)
+    -> VALUES
+    -> (101,'MANOJ KEDAR',20),
+    -> (102,'VIRAT KOHLI',20),
+    -> (103,'RAM SHUKLA',21),
+    -> (104,'RAJU RASTOGI',19),
+    -> (105,'JAMES HOLAND',20);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+-- ============================================= GET_ALL_STUDENTS_DATA() =================================================
+
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE get_student()
+    -> BEGIN
+    -> SELECT * FROM STUDENT;
+    -> END $$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> CALL GET_STUDENT();
++------------+--------------+-------------+
+| STUDENT_ID | STUDENT_NAME | STUDENT_AGE |
++------------+--------------+-------------+
+|        101 | MANOJ KEDAR  |          20 |
+|        102 | VIRAT KOHLI  |          20 |
+|        103 | RAM SHUKLA   |          21 |
+|        104 | RAJU RASTOGI |          19 |
+|        105 | JAMES HOLAND |          20 |
++------------+--------------+-------------+
+5 rows in set (0.00 sec)
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> ALTER TABLE STUDENT
+    -> ADD COLUMN PERSENTAGE DECIMAL(10,2);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE STUDENT
+    -> SET PERSENTAGE = 60
+    -> WHERE STUDENT_ID = 101;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE STUDENT
+    -> SET PERSENTAGE = 70
+    -> WHERE STUDENT_ID = 102;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE STUDENT
+    -> SET PERSENTAGE = 50
+    -> WHERE STUDENT_ID = 103;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE STUDENT
+    -> SET PERSENTAGE = 65
+    -> WHERE STUDENT_ID = 104;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE STUDENT
+    -> SET PERSENTAGE = 60
+    -> WHERE STUDENT_ID = 105;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+-- ====================================	1.GET_MAX_PERSENT() =======================================================
+
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE GET_MAX_PERSENT()
+    -> BEGIN
+    -> SELECT MAX(PERSENTAGE) AS PERSENTAGE FROM STUDENT;
+    ->     END $$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql> CALL GET_MAX_PERSENT();
++------------+
+| PERSENTAGE |
++------------+
+|      70.00 |
++------------+
+1 row in set (0.00 sec)
+Query OK, 0 rows affected (0.01 sec)
+
+-- ========================================== 2.GET_MIN_PERENT() =====================================================
+
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE GET_MIN_PERSENT()
+    -> BEGIN
+    -> SELECT MIN(PERSENTAGE) AS PERSENTAGE FROM STUDENT;
+    ->     END $$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql> CALL GET_MIN_PERSENT();
++------------+
+| PERSENTAGE |
++------------+
+|      50.00 |
++------------+
+1 row in set (0.00 sec)
+Query OK, 0 rows affected (0.04 sec)
+
+-- ============================== 3.GET_AVG_PERSENT() ==================================================================
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE GET_AVERAGE_PERSENT()
+    -> BEGIN
+    -> SELECT AVG(PERSENTAGE) AS PERSENTAGE FROM STUDENT;
+    ->     END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELIMITER ;
+mysql> CALL GET_AVERAGE_PERSENT();
++------------+
+| PERSENTAGE |
++------------+
+|  61.000000 |
++------------+
+1 row in set (0.00 sec)
+Query OK, 0 rows affected (0.01 sec)
+
+-- ==================================== 4.FIND_STUDENT() ============================================================
+
+mysql> DELIMITER &&
+mysql> CREATE PROCEDURE FIND_STUDENT(IN ID INT)  //PASS ARGUMENT AS ID.
+    -> BEGIN
+    -> SELECT * FROM STUDENT
+    ->         WHERE STUDENT_ID = ID;
+    -> END &&
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> CALL FIND_STUDENT(101);
++------------+--------------+-------------+------------+
+| STUDENT_ID | STUDENT_NAME | STUDENT_AGE | PERSENTAGE |
++------------+--------------+-------------+------------+
+|        101 | MANOJ KEDAR  |          20 |      60.00 |
++------------+--------------+-------------+------------+
+1 row in set (0.00 sec)
+Query OK, 0 rows affected (0.05 sec)
+
+-- ======================================== 5.DELETE_STUDENT() =========================================================
+
+mysql> DELIMITER &&
+mysql> CREATE PROCEDURE DELETE_STUDENT(IN ID INT)
+    -> BEGIN
+    -> DELETE FROM STUDENT
+    ->         WHERE STUDENT_ID = ID;
+    ->     END &&
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql>
+mysql> CALL DELETE_STUDENT(101);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CALL GET_STUDENT();
++------------+--------------+-------------+------------+
+| STUDENT_ID | STUDENT_NAME | STUDENT_AGE | PERSENTAGE |
++------------+--------------+-------------+------------+
+|        102 | VIRAT KOHLI  |          20 |      70.00 |
+|        103 | RAM SHUKLA   |          21 |      50.00 |
+|        104 | RAJU RASTOGI |          19 |      65.00 |
+|        105 | JAMES HOLAND |          20 |      60.00 |
++------------+--------------+-------------+------------+
+4 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DESC STUDENT;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| STUDENT_ID   | int           | NO   | PRI | NULL    |       |
+| STUDENT_NAME | varchar(100)  | NO   |     | NULL    |       |
+| STUDENT_AGE  | int           | YES  |     | 28      |       |
+| PERSENTAGE   | decimal(10,2) | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+-- ============================================== INSERT_STUDENT() =====================================================
+
+mysql> DELIMITER &&
+mysql> CREATE PROCEDURE INSERT_STUDENT(IN ID INT,NAME VARCHAR(80),AGE INT,PERSENTAGE DECIMAL(10,2))
+    -> BEGIN
+    -> INSERT INTO student(STUDENT_ID,STUDENT_NAME,STUDENT_AGE,PERSENTAGE)
+    ->         VALUES(ID,NAME,AGE,PERSENTAGE);
+    ->     END &&
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> CALL INSERT_STUDENT(101,'AMAN MUJAWAR',20,80.6);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CALL GET_STUDENT();
++------------+--------------+-------------+------------+
+| STUDENT_ID | STUDENT_NAME | STUDENT_AGE | PERSENTAGE |
++------------+--------------+-------------+------------+
+|        101 | AMAN MUJAWAR |          20 |      80.60 |
+|        102 | VIRAT KOHLI  |          20 |      70.00 |
+|        103 | RAM SHUKLA   |          21 |      50.00 |
+|        104 | RAJU RASTOGI |          19 |      65.00 |
+|        105 | JAMES HOLAND |          20 |      60.00 |
++------------+--------------+-------------+------------+
+5 rows in set (0.00 sec)
+Query OK, 0 rows affected (0.09 sec)
+
+
+/*
+	NOW,
+		WE WILL USE ALL THIS CREATED PROCEDURES.
+*/
+
+mysql> CALL INSERT_STUDENT(106,'SALMAN JAMADAR',19,89);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CALL INSERT_STUDENT(107,'SUSHANT SUTAR',20,90);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CALL INSERT_STUDENT(108,'TANVEER BHALDAR',20,80);
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> CALL GET_STUDENT();
++------------+-----------------+-------------+------------+
+| STUDENT_ID | STUDENT_NAME    | STUDENT_AGE | PERSENTAGE |
++------------+-----------------+-------------+------------+
+|        101 | AMAN MUJAWAR    |          20 |      80.60 |
+|        102 | VIRAT KOHLI     |          20 |      70.00 |
+|        103 | RAM SHUKLA      |          21 |      50.00 |
+|        104 | RAJU RASTOGI    |          19 |      65.00 |
+|        105 | JAMES HOLAND    |          20 |      60.00 |
+| new    106 | SALMAN JAMADAR  |          19 |      89.00 |
+| new    107 | SUSHANT SUTAR   |          20 |      90.00 |
+| new    108 | TANVEER BHALDAR |          20 |      80.00 |
++------------+-----------------+-------------+------------+
+8 rows in set (0.00 sec)
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CALL FIND_STUDENT(108);
++------------+-----------------+-------------+------------+
+| STUDENT_ID | STUDENT_NAME    | STUDENT_AGE | PERSENTAGE |
++------------+-----------------+-------------+------------+
+|        108 | TANVEER BHALDAR |          20 |      80.00 |
++------------+-----------------+-------------+------------+
+1 row in set (0.00 sec)
+Query OK, 0 rows affected (0.02 sec)
+
