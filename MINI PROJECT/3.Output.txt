@@ -1,0 +1,145 @@
+mysql> CREATE DATABASE STUDENT_MANAGEMENT;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE STUDENT_MANAGEMENT;
+Database changed
+mysql>
+mysql> -- DROP TABLE STUDENT;
+mysql> CREATE TABLE STUDENT(
+    ->     STUDENT_NO BIGINT NOT NULL,
+    ->     FIRST_NAME VARCHAR(30) NOT NULL,
+    ->     LAST_NAME VARCHAR(30) NOT NULL,
+    ->     PRIMARY KEY (STUDENT_NO)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>
+mysql> -- TRUNCATE TABLE STUDENT;
+mysql> INSERT INTO STUDENT (STUDENT_NO,FIRST_NAME, LAST_NAME)
+    -> VALUES
+    -> (1,'RAKESH', 'VARMA'),
+    -> (2,'KRISHNA','BHANDALKAR'),
+    -> (3,'OM','LALWANE'),
+    -> (4,'OMKAR','KOKNE');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> SELECT * FROM STUDENT;
++------------+------------+------------+
+| STUDENT_NO | FIRST_NAME | LAST_NAME  |
++------------+------------+------------+
+|          1 | RAKESH     | VARMA      |
+|          2 | KRISHNA    | BHANDALKAR |
+|          3 | OM         | LALWANE    |
+|          4 | OMKAR      | KOKNE      |
++------------+------------+------------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> CREATE TABLE COURSE(
+    -> COURSE_ID BIGINT NOT NULL,
+    ->     COURSE_NAME VARCHAR(30),
+    ->     PRIMARY KEY(COURSE_ID)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+mysql> INSERT INTO COURSE(COURSE_ID,COURSE_NAME)
+    -> VALUES
+    -> (100,'C++'),
+    -> (101,'JAVA'),
+    -> (102,'PYTHON'),
+    -> (103,'MYSQL'),
+    -> (104,'HTML');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> SELECT * FROM COURSE;
++-----------+-------------+
+| COURSE_ID | COURSE_NAME |
++-----------+-------------+
+|       100 | C++         |
+|       101 | JAVA        |
+|       102 | PYTHON      |
+|       103 | MYSQL       |
+|       104 | HTML        |
++-----------+-------------+
+5 rows in set (0.00 sec)
+
+mysql>
+mysql> CREATE TABLE ENROLL(
+    -> STUDENT_NO BIGINT NOT NULL,
+    ->     COURSE_ID BIGINT NOT NULL,
+    ->     PRIMARY KEY(STUDENT_NO,COURSE_ID),
+    ->     FOREIGN KEY ENROLL(STUDENT_NO) REFERENCES STUDENT(STUDENT_NO) ON DELETE CASCADE,
+    -> FOREIGN KEY ENROLL(COURSE_ID) REFERENCES COURSE(COURSE_ID) ON DELETE CASCADE
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>
+mysql> INSERT INTO ENROLL(STUDENT_NO,COURSE_ID)
+    -> VALUES
+    -> (1,101),
+    -> (2,101),
+    -> (2,102),
+    -> (3,100);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> SELECT * FROM ENROLL
+    -> ORDER BY(STUDENT_NO);
++------------+-----------+
+| STUDENT_NO | COURSE_ID |
++------------+-----------+
+|          1 |       101 |
+|          2 |       101 |
+|          2 |       102 |
+|          3 |       100 |
++------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> DELETE FROM STUDENT
+    -> WHERE STUDENT_NO = 1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> SELECT * FROM ENROLL
+    -> ORDER BY(STUDENT_NO);
++------------+-----------+
+| STUDENT_NO | COURSE_ID |
++------------+-----------+
+|          2 |       101 |
+|          2 |       102 |
+|          3 |       100 |
++------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql> SELECT * FROM STUDENT
+    -> ORDER BY(STUDENT_NO) DESC;
++------------+------------+------------+
+| STUDENT_NO | FIRST_NAME | LAST_NAME  |
++------------+------------+------------+
+|          4 | OMKAR      | KOKNE      |
+|          3 | OM         | LALWANE    |
+|          2 | KRISHNA    | BHANDALKAR |
++------------+------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql> SELECT * FROM STUDENT
+    -> ORDER BY(STUDENT_NO) ASC;
++------------+------------+------------+
+| STUDENT_NO | FIRST_NAME | LAST_NAME  |
++------------+------------+------------+
+|          2 | KRISHNA    | BHANDALKAR |
+|          3 | OM         | LALWANE    |
+|          4 | OMKAR      | KOKNE      |
++------------+------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
