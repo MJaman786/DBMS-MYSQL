@@ -84,7 +84,7 @@ DROP INDEX idx_emp_name ON staff;
 
 -- Dropping a View
 DROP VIEW high_salary;
------------------------------------------------------------ CHANGE Command ------------------------------------------------------------
+----------------------------------------------------------- 4. CHANGE Command ------------------------------------------------------------
 -- Used to rename a column and/or change its data type.
 -- syntax
 
@@ -94,7 +94,7 @@ CHANGE old_column_name new_column_name new_data_type [constraints];
 -- example
 ALTER TABLE students 
 CHANGE name student_name VARCHAR(50) NOT NULL;
------------------------------------------------------------ MODIFY Command ------------------------------------------------------------
+----------------------------------------------------------- 5. MODIFY Command ------------------------------------------------------------
 -- Used to change the data type or constraints of an existing column without renaming it.
 -- syntax
 ALTER TABLE table_name 
@@ -103,14 +103,14 @@ MODIFY column_name new_data_type [constraints];
 -- example
 ALTER TABLE students 
 MODIFY enroll_fees BIGINT NOT NULL;
------------------------------------------------------------ TRUNCATE Command ------------------------------------------------------------
+----------------------------------------------------------- 6. TRUNCATE Command ------------------------------------------------------------
 -- Used to remove all records from a table while keeping its structure intact. 
 -- It is faster than DELETE as it does not log individual row deletions.
 
 -- Truncating a Table
 TRUNCATE TABLE staff;
 
------------------------------------------------------------ RENAME Command -------------------------------------------------------------
+----------------------------------------------------------- 7. RENAME Command -------------------------------------------------------------
 -- Used to change the name of a table or database.
 
 -- Renaming a Table
